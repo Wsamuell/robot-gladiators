@@ -1,4 +1,11 @@
 
+
+// function to generate a random numeric value
+var randomNumber = function (min, max) {
+    var value = Math.floor(Math.random() * (max - min + 1) + min);
+
+    return value;
+};
 // You can also log multiple values at once like this
 
 var fight = function (enemy) {
@@ -21,6 +28,8 @@ var fight = function (enemy) {
                 break;
             }
         }
+        // generate random damage value based on player's attack power
+        var damage = randomNumber(playerInfo.attack - 3, playerInfo.attack);
 
         // remove enemy's health by subtracting the amount set in the playerInfo.attack variable
         enemy.health = Math.max(0, enemy.health - playerInfo.attack);
@@ -71,9 +80,8 @@ var startGame = function () {
             var pickedEnemyObj = enemyInfo[i];
             // generate random damage value based on player's attack power
             pickedEnemyObj.health = randomNumber(40, 60);
-
-            enemyHealth = Math.max(0, enemyHealth - damage);
             fight(pickedEnemyObj);
+
             // if player is still alive and we're not at the last enemy in the array
             if (playerInfo.health > 0 && i < enemyInfo.length - 1) {
                 // ask if player wants to use the store before next round
@@ -102,24 +110,35 @@ var endGame = function () {
     else {
         window.alert("You've lost your robot in battle. Muah! AH! AH!");
     }
+    //////////////////////
+    // ask player if they'd like to play again
+    var playAgainConfirm = window.confirm("Would you like to play again?");
+
+    if (playAgainConfirm) {
+        // restart the game
+        startGame();
+    }
+    else {
+        window.alert("Thank you for playing Robot Gladiators! Come back soon!");
+    }
+    ///////////
 };
 var shop = function () {
     var shopOptionPrompt = window.prompt(
         "Would you like to REFILL your health, UPGRADE your attack, or LEAVE the store? Please enter one: 'REFILL', 'UPGRADE', or 'LEAVE' to make a choice."
     );
 
-    ///////////
 
     // use switch to carry out action
     switch (shopOptionPrompt) {
         case "REFILL":
-            case "refill":
-              playerInfo.refillHealth();
-              break;
-            case "UPGRADE":
-            case "upgrade":
-              playerInfo.upgradeAttack();
-              break;
+        case "refill":
+            playerInfo.refillHealth();
+            break;
+        case "UPGRADE":
+        case "upgrade":
+            playerInfo.upgradeAttack();
+            break;
         case "LEAVE": // new case
         case "leave":
             window.alert("Leaving the store.");
@@ -130,26 +149,18 @@ var shop = function () {
             break;
     }
 };
-// function to generate a random numeric value
-var randomNumber = function (min, max) {
-    var value = Math.floor(Math.random() * (max - min + 1) + min);
 
-    return value;
-};
-//////////////////////
-// ask player if they'd like to play again
-var playAgainConfirm = window.confirm("Would you like to play again?");
-
-if (playAgainConfirm) {
-    // restart the game
-    startGame();
-}
-else {
-    window.alert("Thank you for playing Robot Gladiators! Come back soon!");
+var getPlayerName = function () {
+    var name = "";
+    while (name === "" || name === null) {
+        name = prompt("What is your robot's name?");
+    }
+    console.log("Your robot's name is " + name)
+    return name;
 }
 
 var playerInfo = {
-    name: window.prompt("What is your robot's name?"),
+    name: getPlayerName(),
     health: 100,
     attack: 10,
     money: 10,
@@ -195,3 +206,13 @@ var enemyInfo = [
         attack: randomNumber(10, 14)
     }
 ];
+
+console.log(enemyInfo);
+console.log(enemyInfo[0]);
+console.log(enemyInfo[0].name);
+console.log(enemyInfo[0]['attack']);
+
+/* END GAME INFORMATION / VARIABLES */
+
+/* RUN GAME */
+startGame();
